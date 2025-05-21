@@ -21,7 +21,7 @@ const app = express();
 app.use(express.json());
 app.use(cors({
     origin: process.env.NODE_ENV === 'production'
-        ? process.env.FRONTEND_URL
+        ? ['https://wap-project-react.onrender.com', 'http://localhost:5173']
         : 'http://localhost:5173',
     credentials: true
 }));
