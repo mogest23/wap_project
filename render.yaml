@@ -2,8 +2,11 @@ services:
   - type: web
     name: reviewme-api
     runtime: node
-    buildCommand: npm install && npm run build
-    startCommand: npm start
+    nodeVersion: 18.x
+    buildCommand: |
+      npm install
+      npm run build
+    startCommand: cd dist && npm start
     envVars:
       - key: NODE_ENV
         value: production
