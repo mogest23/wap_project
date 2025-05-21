@@ -9,7 +9,8 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
-    "build": "rm -rf dist && tsc && cp package.json dist/",
+    "build": "tsc",
+    "postbuild": "cp package.json dist/",
     "seed": "ts-node src/scripts/seedProducts.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
