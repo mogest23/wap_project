@@ -1,61 +1,154 @@
-# E-commerce Backend API
+# Product Review Server
 
-This is the backend API for an e-commerce product and review system built with Express, TypeScript, and MongoDB.
+The backend API for the Product Review system, built with Node.js, Express, and TypeScript.
 
-## Setup
+## Tech Stack
 
-1. Create a `.env` file in the server root directory with the following variables:
-   ```
-   PORT=5000
-   NODE_ENV=development
-   MONGODB_URI=your_mongodb_connection_string
-   ```
+- Node.js with Express
+- TypeScript
+- MongoDB for database
+- Mongoose for ODM
+- Swagger for API documentation
+
+## Getting Started
+
+### Prerequisites
+- Node.js (v18 or higher)
+- MongoDB
+- npm or yarn
+
+### Installation
+
+1. Navigate to the server directory:
+```bash
+cd server
+```
 
 2. Install dependencies:
-   ```
-   npm install
-   ```
+```bash
+npm install
+```
 
-3. Start the development server:
-   ```
-   npm run dev
-   ```
+### Environment Setup
 
-4. For production build:
-   ```
-   npm run build
-   npm start
-   ```
+Create a `.env` file in the server directory:
+```env
+# For development
+PORT=3000
+MONGODB_URI=mongodb://localhost:27017/product-review
+NODE_ENV=development
+
+# For production (Render)
+PORT=3000
+MONGODB_URI=your_mongodb_atlas_uri
+NODE_ENV=production
+```
+
+### Running the Application
+
+Start the development server:
+```bash
+npm run dev
+```
+
+The API will be available at:
+- Development: [http://localhost:3000/api](http://localhost:3000/api)
+- Production: [https://product-review-api.onrender.com/api](https://product-review-api.onrender.com/api)
+
+API documentation will be available at:
+- Development: [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
+- Production: [https://product-review-api.onrender.com/api-docs](https://product-review-api.onrender.com/api-docs)
+
+## Project Structure
+
+```
+server/
+├── src/
+│   ├── config/        # Configuration files
+│   ├── controllers/   # Route controllers
+│   ├── middlewares/   # Custom middlewares
+│   ├── models/        # Database models
+│   ├── routes/        # API routes
+│   ├── scripts/       # Utility scripts
+│   └── index.ts       # Application entry point
+├── swagger.yaml       # API documentation
+└── tsconfig.json      # TypeScript configuration
+```
 
 ## API Endpoints
 
 ### Products
-- `GET /api/products` - Get all products (paginated, 10 per page)
-- `GET /api/products?page=1&category=electronics` - Filter products by category
-- `GET /api/products/search?q=keyword` - Search products by name
-- `GET /api/products/:id` - Get a single product
+- `GET /api/products` - Get all products
+- `POST /api/products` - Create a new product
+- `GET /api/products/search` - Search products
+- `GET /api/products/:id` - Get product by ID
 
 ### Reviews
-- `GET /api/products/:id/reviews` - Get all reviews for a product
-- `POST /api/products/:id/reviews` - Add a review to a product
+- `GET /api/products/:productId/reviews` - Get product reviews
+- `POST /api/products/:productId/reviews` - Add a review
 - `PUT /api/products/:productId/reviews/:id` - Update a review
 - `DELETE /api/products/:productId/reviews/:id` - Delete a review
 
-## Data Models
+For detailed API documentation, visit [https://product-review-api.onrender.com/api-docs](https://product-review-api.onrender.com/api-docs)
+
+## Database Schema
 
 ### Product
-- id
-- name
-- description
-- category
-- price
-- dateAdded
-- averageRating (computed from reviews)
+```typescript
+{
+  id: string
+  name: string
+  description: string
+  price: number
+  createdAt: Date
+  updatedAt: Date
+}
+```
 
 ### Review
-- id
-- productId
-- author
-- rating (1–5)
-- comment
-- date # wap_project
+```typescript
+{
+  id: string
+  productId: string
+  rating: number (1-5)
+  comment: string
+  createdAt: Date
+  updatedAt: Date
+}
+```
+
+## Development
+
+### Code Style
+- ESLint for code linting
+- Prettier for code formatting
+- TypeScript for type safety
+
+### Testing
+```bash
+npm test
+```
+
+### Building for Production
+```bash
+npm run build
+```
+
+The build output will be in the `dist` directory.
+
+## Deployment
+
+The server is deployed on Render:
+- URL: [https://product-review-api.onrender.com](https://product-review-api.onrender.com)
+- Platform: Render
+- Database: MongoDB Atlas
+- Environment Variables: Configured in Render dashboard
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run test` - Run tests
+- `npm run lint` - Run ESLint
+- `npm run format` - Format code with Prettier
