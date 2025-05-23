@@ -3,6 +3,8 @@ import cors from 'cors';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import path from 'path';
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
 import config from './config/config';
 import connectDB from './config/db';
 import productRoutes from './routes/productRoutes';
@@ -11,6 +13,10 @@ import { notFound, errorHandler } from './middlewares/errorMiddleware';
 
 // Load environment variables
 dotenv.config();
+
+// Load Swagger document
+const swaggerPath = path.join(process.cwd(), 'swagger.yaml');
+const swaggerDocument = YAML.load(swaggerPath);
 
 // Connect to MongoDB
 connectDB();
@@ -40,6 +46,9 @@ if (config.nodeEnv === 'development') {
     app.use(morgan('dev'));
 }
 
+// Swagger Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 // API Routes
 app.use('/api/products', productRoutes);
 app.use('/api/products/:productId/reviews', reviewRoutes);
@@ -52,4 +61,5 @@ app.use(errorHandler);
 const PORT = config.port;
 app.listen(PORT, () => {
     console.log(`Server running in ${config.nodeEnv} mode on port ${PORT}`);
+    console.log(`API Documentation available at http://localhost:${PORT}/api-docs`);
 }); 
